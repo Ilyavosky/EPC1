@@ -3,6 +3,9 @@ import { getViralBooks } from '@/lib/actions/report';
 import Sidebar from '@/components/sideBar';
 import Header from '@/components/header';
 
+export const dynamic = 'force-dynamic';
+
+
 export default async function ViralBooksReport() {
   const books = await getViralBooks();
 

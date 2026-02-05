@@ -12,7 +12,7 @@ services:
       - "${POSTGRES_PORT:-5438}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./database:/docker-entrypoint-initdb.d:ro
+      - ./db:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ep} -d ${POSTGRES_DB:-ep_db}"]
       interval: 10s

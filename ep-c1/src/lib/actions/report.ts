@@ -16,7 +16,15 @@ export async function getViralBooks() {
     const result = await pool.query(
       'SELECT * FROM vw_most_borrowed_books ORDER BY global_rank ASC LIMIT 50'
     );
-    return z.array(viralBookSchema).parse(result.rows);
+    
+    const parsed = z.array(viralBookSchema).safeParse(result.rows);
+    
+    if (!parsed.success) {
+      console.error('Validation Error:', parsed.error);
+      throw new Error('Error de validación en datos de viralidad');
+    }
+    
+    return parsed.data;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Error al obtener reporte de viralidad');

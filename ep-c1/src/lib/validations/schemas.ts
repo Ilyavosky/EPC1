@@ -5,9 +5,9 @@ export const viralBookSchema = z.object({
   title: z.string(),
   author: z.string(),
   category_name: z.string(),
-  total_loans: z.number(),
-  category_rank: z.number(),
-  global_rank: z.number(),
+  total_loans: z.coerce.number(),
+  category_rank: z.coerce.number(),
+  global_rank: z.coerce.number(),
 });
 
 export const overdueLoanSchema = z.object({
@@ -23,7 +23,7 @@ export const overdueLoanSchema = z.object({
 
 export const financeSchema = z.object({
   month_year: z.string(),
-  total_fines_issued: z.number(),
+  total_fines_issued: z.coerce.number(),
   total_amount_generated: z.string(),
   total_collected: z.string(),
   outstanding_debt: z.string(),
@@ -35,18 +35,18 @@ export const memberActivitySchema = z.object({
   name: z.string(),
   email: z.string().email(),
   member_type: z.string(),
-  total_loans: z.number(),
+  total_loans: z.coerce.number(),
   last_loan_date: z.string(),
-  late_returns: z.number(),
+  late_returns: z.coerce.number(),
   delinquency_rate: z.string().nullable(),
   member_status: z.string(),
 });
 
 export const inventoryHealthSchema = z.object({
   category: z.string(),
-  total_copies: z.number(),
-  in_shelf: z.number(),
-  checked_out: z.number(),
+  total_copies: z.coerce.number(),
+  in_shelf: z.coerce.number(),
+  checked_out: z.coerce.number(),
   utilization_rate_pct: z.string(),
   currently_borrowed_titles_sample: z.string(),
 });

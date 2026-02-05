@@ -2,16 +2,15 @@
 -- REPORTE 1: libros mas prestados
 -- Usa: Window + Function (RANK), COUNT
 -- Busca: Identificar qué libros dominan cada categoría.
-
 CREATE OR REPLACE VIEW vw_most_borrowed_books AS
 SELECT 
     b.id AS book_id,
     b.title,
     b.author,
     c.name AS category_name,
-    COUNT(l.id) AS total_loans,
-    RANK() OVER (PARTITION BY c.name ORDER BY COUNT(l.id) DESC) AS category_rank,
-    DENSE_RANK() OVER (ORDER BY COUNT(l.id) DESC) AS global_rank
+    COUNT(l.id)::INTEGER AS total_loans,
+    RANK() OVER (PARTITION BY c.name ORDER BY COUNT(l.id) DESC)::INTEGER AS category_rank,
+    DENSE_RANK() OVER (ORDER BY COUNT(l.id) DESC)::INTEGER AS global_rank
 FROM books b
 JOIN categories c ON b.category_id = c.id
 JOIN copies cp ON b.id = cp.book_id
