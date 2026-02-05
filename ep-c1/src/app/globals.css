@@ -1,15 +1,20 @@
 @import "tailwindcss";
 
 :root {
+  --salamence-red: #CD454E;
+  --salamence-blue: #3C78A6;
+  --armor-grey: #9AA4AE;
+  --shadow-navy: #22435F;
+  --deep-crimson: #8B2830;
+  
+  --color-primary: var(--salamence-blue);
+  --color-error: var(--salamence-red);
+  --color-border: var(--armor-grey);
+  --color-text-primary: var(--shadow-navy);
+  --color-hover: var(--deep-crimson);
+  
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +25,66 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.bg-salamence-red {
+  background-color: var(--salamence-red);
+}
+
+.bg-salamence-blue {
+  background-color: var(--salamence-blue);
+}
+
+.bg-armor-grey {
+  background-color: var(--armor-grey);
+}
+
+.bg-shadow-navy {
+  background-color: var(--shadow-navy);
+}
+
+.bg-deep-crimson {
+  background-color: var(--deep-crimson);
+}
+
+.text-salamence-red {
+  color: var(--salamence-red);
+}
+
+.text-salamence-blue {
+  color: var(--salamence-blue);
+}
+
+.text-armor-grey {
+  color: var(--armor-grey);
+}
+
+.text-shadow-navy {
+  color: var(--shadow-navy);
+}
+
+.text-deep-crimson {
+  color: var(--deep-crimson);
+}
+
+.border-salamence-red {
+  border-color: var(--salamence-red);
+}
+
+.border-salamence-blue {
+  border-color: var(--salamence-blue);
+}
+
+.border-armor-grey {
+  border-color: var(--armor-grey);
+}
+
+.hover\:bg-deep-crimson:hover {
+  background-color: var(--deep-crimson);
+}
+
+.hover\:bg-salamence-blue:hover {
+  background-color: var(--salamence-blue);
 }
