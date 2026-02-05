@@ -1,7 +1,7 @@
 import React from 'react';
-import Sidebar from './components/sideBar';
-import Header from './components/header';
-import Dashboard from './components/dashboard';
+import Sidebar from '@/components/sideBar';
+import Header from '@/components/header';
+import Dashboard from '@/components/dashboard';
 
 const Home = () => {
   return (
