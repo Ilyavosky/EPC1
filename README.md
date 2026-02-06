@@ -1,4 +1,4 @@
-# Tarea 6: Lab Reportes: Next.js Reports Dashboard (PostgreSQL + Views + Docker Compose)
+# Evaluación Práctica C1. NextJS + BDA
 
 **Alumno:** Ilya Cortés Ruiz  
 **Matrícula:** 243710  
