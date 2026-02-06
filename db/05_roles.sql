@@ -4,7 +4,7 @@ BEGIN
    IF NOT EXISTS (
       SELECT FROM pg_catalog.pg_roles
       WHERE  rolname = 'app_user') THEN
-      CREATE ROLE app_user WITH LOGIN PASSWORD 'app_secure_password_2026';
+      CREATE ROLE app_user WITH LOGIN PASSWORD 'password_estudiante_2026'; --Contraseña genérica para la entrega
    END IF;
 END
 $do$;

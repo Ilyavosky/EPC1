@@ -17,7 +17,7 @@ JOIN copies cp ON b.id = cp.book_id
 LEFT JOIN loans l ON cp.id = l.copy_id
 GROUP BY b.id, b.title, b.author, c.name;
 
--- VERIFY: SELECT * FROM vw_most_borrowed_books WHERE category_rank <= 3;
+-- VERIFY: SELECT * FROM vw_most_borrowed_books WHERE category_rank <= 3;   
 
 
 
@@ -113,7 +113,6 @@ HAVING COUNT(l.id) > 0;
 -- REPORTE 5: Salud del Inventario (Rotación)
 -- Usa: CASE, COALESCE
 -- Busca: Es un reporte de Eficiencia de Activos
-
 CREATE OR REPLACE VIEW vw_inventory_health AS
 SELECT 
     c.name AS category,
@@ -124,7 +123,7 @@ SELECT
         (SUM(CASE WHEN cp.status = FALSE THEN 1 ELSE 0 END)::DECIMAL / COUNT(cp.id)) * 100,
     2) AS utilization_rate_pct,
     COALESCE(
-        STRING_AGG(DISTINCT b.title, ', ' FILTER (WHERE cp.status = FALSE)), 
+        STRING_AGG(DISTINCT b.title, ', ') FILTER (WHERE cp.status = FALSE), 
         'Ninguno'
     ) AS currently_borrowed_titles_sample
 FROM copies cp
