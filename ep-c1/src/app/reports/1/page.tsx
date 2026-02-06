@@ -2,145 +2,110 @@ import React from 'react';
 import { getViralBooks } from '@/lib/actions/report';
 import Sidebar from '@/components/sideBar';
 import Header from '@/components/header';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
+interface PageProps {
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+  }>;
+}
 
-export default async function ViralBooksReport() {
-  const books = await getViralBooks();
+export default async function ViralBooksReport(props: PageProps) {
+  const params = await props.searchParams;
+  const page = Number(params?.page) || 1;
+  const search = params?.search || '';
+  const limit = 10;
+
+  const books = await getViralBooks({ page, limit, search });
 
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-y-auto">
         <Header />
-        <main className="p-6 bg-gray-50 min-h-screen">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-shadow-navy mb-2">
-              Libros Más Prestados
-            </h1>
-            <p className="text-armor-grey">
-              Ranking de popularidad por categoría basado en historial de préstamos
-            </p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow mb-6 p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-salamence-blue text-white p-4 rounded-lg">
-                <p className="text-sm opacity-90">Total de Títulos</p>
-                <p className="text-3xl font-bold">{books.length}</p>
-              </div>
-              <div className="bg-deep-crimson text-white p-4 rounded-lg">
-                <p className="text-sm opacity-90">Más Prestado</p>
-                <p className="text-xl font-bold truncate">
-                  {books[0]?.title || 'N/A'}
-                </p>
-                <p className="text-sm opacity-90">
-                  {books[0]?.total_loans} préstamos
-                </p>
-              </div>
-              <div className="bg-shadow-navy text-white p-4 rounded-lg">
-                <p className="text-sm opacity-90">Categorías</p>
-                <p className="text-3xl font-bold">
-                  {new Set(books.map(b => b.category_name)).size}
-                </p>
-              </div>
+        <main className="p-6 bg-gray-50 flex-1">
+          <div className="flex justify-between items-end mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-shadow-navy mb-2">
+                Libros Más Prestados
+              </h1>
+              <p className="text-armor-grey">
+                Ranking de popularidad por categoría
+              </p>
             </div>
+            
+            <form className="flex gap-2">
+              <input 
+                name="search"
+                defaultValue={search}
+                placeholder="Buscar título o autor..." 
+                className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-salamence-blue outline-none"
+              />
+              <button 
+                type="submit" 
+                className="bg-salamence-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Buscar
+              </button>
+            </form>
           </div>
 
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="bg-white rounded-lg shadow overflow-hidden mb-4">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-shadow-navy text-white">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                      Ranking Global
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                      Título
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                      Autor
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                      Categoría
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                      Rank Categoría
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                      Total Préstamos
-                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase">Ranking</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase">Título</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase">Autor</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase">Categoría</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase">Préstamos</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {books.map((book) => (
                     <tr key={book.book_id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <span className={`
-                            inline-flex items-center justify-center w-8 h-8 rounded-full font-bold
-                            ${book.global_rank === 1 ? 'bg-yellow-400 text-yellow-900' : ''}
-                            ${book.global_rank === 2 ? 'bg-gray-300 text-gray-700' : ''}
-                            ${book.global_rank === 3 ? 'bg-orange-400 text-orange-900' : ''}
-                            ${book.global_rank > 3 ? 'bg-gray-100 text-gray-600' : ''}
-                          `}>
-                            {book.global_rank}
-                          </span>
-                        </div>
-                      </td>
+                      <td className="px-6 py-4 font-bold text-gray-900">#{book.global_rank}</td>
+                      <td className="px-6 py-4 font-medium text-shadow-navy">{book.title}</td>
+                      <td className="px-6 py-4 text-gray-600">{book.author}</td>
                       <td className="px-6 py-4">
-                        <div className="text-sm font-medium text-shadow-navy">
-                          {book.title}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-700">{book.author}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-salamence-blue text-white">
+                        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
                           {book.category_name}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <span className="text-sm font-medium text-gray-700">
-                          #{book.category_rank}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="text-sm font-bold text-salamence-red">
-                            {book.total_loans}
-                          </div>
-                          <div className="ml-2 flex-1">
-                            <div className="bg-gray-200 rounded-full h-2 w-20">
-                              <div
-                                className="bg-salamence-red h-2 rounded-full"
-                                style={{
-                                  width: `${Math.min(
-                                    (book.total_loans / books[0].total_loans) * 100,
-                                    100
-                                  )}%`,
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </td>
+                      <td className="px-6 py-4 text-salamence-red font-bold">{book.total_loans}</td>
                     </tr>
                   ))}
+                  {books.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                        No se encontraron datos.
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
           </div>
 
-          {books.length === 0 && (
-            <div className="bg-white rounded-lg shadow p-12 text-center">
-              <p className="text-armor-grey text-lg">
-                No hay datos de préstamos disponibles
-              </p>
-            </div>
-          )}
+          <div className="flex justify-between items-center">
+            <Link
+              href={`/reports/1?page=${Math.max(1, page - 1)}&search=${search}`}
+              className={`px-4 py-2 border rounded bg-white ${page === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-gray-100'}`}
+            >
+              Anterior
+            </Link>
+            <span className="text-sm text-gray-600">Página {page}</span>
+            <Link
+              href={`/reports/1?page=${page + 1}&search=${search}`}
+              className={`px-4 py-2 border rounded bg-white ${books.length < limit ? 'opacity-50 pointer-events-none' : 'hover:bg-gray-100'}`}
+            >
+              Siguiente
+            </Link>
+          </div>
         </main>
       </div>
     </div>
